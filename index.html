@@ -7,7 +7,6 @@
 
     <style>
       :root{
-        /* Maroon + white theme */
         --bg: #ffffff;
         --page: #faf7f8;
         --card: #ffffff;
@@ -17,8 +16,8 @@
 
         --stroke: #ead7de;
 
-        --accent1: #7a1634; /* maroon */
-        --accent2: #b0183f; /* brighter maroon */
+        --accent1: #7a1634;
+        --accent2: #b0183f;
         --accentGlow: rgba(176, 24, 63, 0.18);
 
         --danger: #b00020;
@@ -189,7 +188,6 @@
         background: #fff;
       }
 
-      /* Mobile optimization */
       @media (max-width: 720px){
         .grid{ grid-template-columns: 1fr; }
         .hint{ width:100%; margin-left:0; }
@@ -245,6 +243,9 @@
           </div>
 
           <div id="msg" class="msg" role="status" aria-live="polite"></div>
+
+          <!-- Hidden anchor used for opening a single new tab -->
+          <a id="uberOut" href="#" target="_blank" rel="noopener noreferrer" style="display:none;"></a>
         </form>
 
         <footer>
@@ -306,7 +307,6 @@
 
         const pickupEncoded = encodeURIComponent(JSON.stringify(pickupObj));
         const drop0Encoded = encodeURIComponent(JSON.stringify(dropObj));
-
         return `https://m.uber.com/looking?pickup=${pickupEncoded}&drop[0]=${drop0Encoded}`;
       }
 
@@ -334,12 +334,12 @@
         }
 
         const url = buildUberLink(pickupLat, pickupLng, dropLat, dropLng);
-
         showMsg("Opening Uber…", "info");
 
-        // Open in a new tab (best effort). If blocked, fall back to same tab silently.
-        const newTab = window.open(url, "_blank", "noopener,noreferrer");
-        if (!newTab) window.location.assign(url);
+        // Open ONLY in a new tab via a user-gesture click
+        const a = document.getElementById("uberOut");
+        a.href = url;
+        a.click();
       });
 
       document.getElementById("fillSample").addEventListener("click", () => {

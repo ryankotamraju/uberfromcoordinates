@@ -7,15 +7,23 @@
 
     <style>
       :root{
-        --bg: #0b1220;
-        --card: #121b2d;
-        --stroke: #243454;
-        --text: #eaf0ff;
-        --muted: #a9b7d6;
-        --accent1: #7c5cff;
-        --accent2: #35d3ff;
-        --danger: #ff4d6d;
-        --shadow: 0 14px 40px rgba(0,0,0,.35);
+        /* Maroon + white theme */
+        --bg: #ffffff;
+        --page: #faf7f8;
+        --card: #ffffff;
+
+        --text: #1a1a1a;
+        --muted: #6b5560;
+
+        --stroke: #ead7de;
+
+        --accent1: #7a1634; /* maroon */
+        --accent2: #b0183f; /* brighter maroon */
+        --accentGlow: rgba(176, 24, 63, 0.18);
+
+        --danger: #b00020;
+
+        --shadow: 0 14px 40px rgba(38, 18, 24, 0.12);
         --radius: 16px;
       }
 
@@ -25,7 +33,7 @@
       body{
         margin:0;
         font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
-        background: var(--bg);
+        background: linear-gradient(180deg, var(--page), var(--bg));
         color: var(--text);
         min-height: 100vh;
         display:flex;
@@ -53,6 +61,7 @@
         margin:0;
         font-size: clamp(20px, 4.8vw, 28px);
         letter-spacing: .2px;
+        color: #2a0f18;
       }
 
       .sub{
@@ -90,20 +99,20 @@
         width:100%;
         appearance: none;
         border: 1px solid var(--stroke);
-        background: #0d1526;
+        background: #fff;
         color: var(--text);
         padding: 12px 12px;
         border-radius: 12px;
-        font-size: 16px; /* important for iOS zoom prevention */
+        font-size: 16px; /* prevents iOS zoom */
         outline: none;
         transition: border-color .18s ease, box-shadow .18s ease;
       }
 
-      input::placeholder{ color: rgba(169,183,214,.55); }
+      input::placeholder{ color: rgba(107,85,96,.55); }
 
       input:focus{
-        border-color: rgba(124,92,255,.9);
-        box-shadow: 0 0 0 4px rgba(124,92,255,.18);
+        border-color: rgba(176, 24, 63, .55);
+        box-shadow: 0 0 0 4px var(--accentGlow);
       }
 
       .actions{
@@ -130,22 +139,22 @@
       .btn:active{ transform: translateY(1px); }
 
       .btn-primary{
-        color: #07102a;
+        color: #ffffff;
         background: linear-gradient(135deg, var(--accent1), var(--accent2));
-        box-shadow: 0 10px 22px rgba(124,92,255,.16), 0 8px 18px rgba(53,211,255,.10);
+        box-shadow: 0 10px 22px rgba(122,22,52,.18), 0 8px 18px rgba(176,24,63,.12);
       }
 
       .btn-secondary{
-        color: var(--text);
-        background: #0d1526;
+        color: #2a0f18;
+        background: #ffffff;
         border: 1px solid var(--stroke);
       }
 
-      .btn:hover{ filter: brightness(1.04); }
+      .btn:hover{ filter: brightness(1.03); }
 
       .hint{
         margin-left:auto;
-        color: rgba(169,183,214,.85);
+        color: rgba(107,85,96,.9);
         font-size: 13px;
       }
 
@@ -154,29 +163,30 @@
         padding: 12px 12px;
         border-radius: 12px;
         border: 1px solid var(--stroke);
-        background: #0d1526;
+        background: #fff;
         color: var(--muted);
         display:none;
       }
 
       .msg.error{
-        border-color: rgba(255,77,109,.6);
-        background: rgba(255,77,109,.10);
-        color: #ffd3db;
+        border-color: rgba(176,0,32,.35);
+        background: rgba(176,0,32,.06);
+        color: #7a0016;
       }
 
       .msg.info{
-        border-color: rgba(53,211,255,.5);
-        background: rgba(53,211,255,.08);
+        border-color: rgba(176,24,63,.28);
+        background: rgba(176,24,63,.06);
+        color: #5a1126;
       }
 
       footer{
         padding: 12px 20px 16px;
         border-top: 1px solid var(--stroke);
-        color: rgba(169,183,214,.75);
+        color: rgba(107,85,96,.85);
         font-size: 12px;
-        line-height: 1.4;
-        background: #0d1526;
+        line-height: 1.45;
+        background: #fff;
       }
 
       /* Mobile optimization */
@@ -193,9 +203,9 @@
     <div class="wrap">
       <div class="card">
         <header>
-          <h1>Uber Deep Link Redirect</h1>
+          <h1>Open Uber with Coordinates</h1>
           <div class="sub">
-            Enter pickup and dropoff coordinates, then we’ll redirect you to the Uber web deep link.
+            Enter pickup and dropoff coordinates, then we’ll open Uber with those locations filled in.
           </div>
         </header>
 
@@ -238,8 +248,8 @@
         </form>
 
         <footer>
-          This page only builds a redirect URL. It does not request rides. If deep links are blocked in your browser,
-          try opening on mobile or ensure the Uber app is installed.
+          This page will not order a ride. It only opens Uber with your pickup and dropoff filled in so you can review
+          options and confirm in the app/site.
         </footer>
       </div>
     </div>
@@ -319,10 +329,9 @@
 
         const url = buildUberLink(pickupLat, pickupLng, dropLat, dropLng);
 
-        // Show a simple status (no URL)
         showMsg("Redirecting…", "info");
 
-        // Small delay so the message paints before navigation on mobile browsers
+        // Small delay so message paints before navigation on mobile
         setTimeout(() => {
           window.location.assign(url);
         }, 80);

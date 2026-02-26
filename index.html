@@ -7,60 +7,51 @@
 
     <style>
       :root{
-        --bg1:#0b1020;
-        --bg2:#121a33;
-        --card:#0f1731cc;
-        --stroke:#2a3a70;
-        --text:#eaf0ff;
-        --muted:#b9c6ff;
-        --accent:#7c5cff;
-        --accent2:#35d3ff;
-        --danger:#ff4d6d;
-        --shadow: 0 16px 50px rgba(0,0,0,.35);
-        --radius: 18px;
+        --bg: #0b1220;
+        --card: #121b2d;
+        --stroke: #243454;
+        --text: #eaf0ff;
+        --muted: #a9b7d6;
+        --accent1: #7c5cff;
+        --accent2: #35d3ff;
+        --danger: #ff4d6d;
+        --shadow: 0 14px 40px rgba(0,0,0,.35);
+        --radius: 16px;
       }
 
       * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
 
       body{
         margin:0;
         font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+        background: var(--bg);
         color: var(--text);
         min-height: 100vh;
         display:flex;
         align-items:center;
         justify-content:center;
-        padding: 28px 16px;
-        background:
-          radial-gradient(1100px 700px at 15% 10%, rgba(124,92,255,.35), transparent 60%),
-          radial-gradient(900px 600px at 90% 25%, rgba(53,211,255,.28), transparent 55%),
-          radial-gradient(700px 500px at 55% 95%, rgba(255,77,109,.18), transparent 55%),
-          linear-gradient(160deg, var(--bg1), var(--bg2));
+        padding: 24px 14px;
       }
 
-      .wrap{
-        width: min(860px, 100%);
-      }
+      .wrap{ width: min(860px, 100%); }
 
       .card{
-        background: linear-gradient(180deg, rgba(15,23,49,.92), rgba(15,23,49,.72));
-        border: 1px solid rgba(42,58,112,.65);
+        background: var(--card);
+        border: 1px solid var(--stroke);
         box-shadow: var(--shadow);
         border-radius: var(--radius);
         overflow:hidden;
       }
 
       header{
-        padding: 26px 26px 18px;
-        border-bottom: 1px solid rgba(42,58,112,.5);
-        background:
-          radial-gradient(600px 220px at 10% 0%, rgba(124,92,255,.25), transparent 60%),
-          radial-gradient(600px 220px at 90% 0%, rgba(53,211,255,.18), transparent 60%);
+        padding: 20px 20px 14px;
+        border-bottom: 1px solid var(--stroke);
       }
 
       h1{
         margin:0;
-        font-size: clamp(22px, 3.2vw, 30px);
+        font-size: clamp(20px, 4.8vw, 28px);
         letter-spacing: .2px;
       }
 
@@ -71,29 +62,11 @@
         font-size: 14px;
       }
 
-      .pill-row{
-        margin-top: 12px;
-        display:flex;
-        gap:10px;
-        flex-wrap: wrap;
-      }
-      .pill{
-        font-size: 12px;
-        padding: 7px 10px;
-        border-radius: 999px;
-        border: 1px solid rgba(42,58,112,.7);
-        background: rgba(10,16,36,.55);
-        color: var(--muted);
-      }
-      .pill b{ color: var(--text); }
-
-      form{
-        padding: 22px 26px 26px;
-      }
+      form{ padding: 16px 20px 18px; }
 
       .section-title{
-        margin: 18px 0 10px;
-        font-size: 13px;
+        margin: 16px 0 10px;
+        font-size: 12px;
         text-transform: uppercase;
         letter-spacing: .12em;
         color: var(--muted);
@@ -102,7 +75,7 @@
       .grid{
         display:grid;
         grid-template-columns: 1fr 1fr;
-        gap: 14px;
+        gap: 12px;
       }
 
       label{
@@ -113,24 +86,20 @@
         margin-bottom: 8px;
       }
 
-      .field{
-        position: relative;
-      }
-
       input{
         width:100%;
         appearance: none;
-        border: 1px solid rgba(42,58,112,.75);
-        background: rgba(7,12,28,.55);
+        border: 1px solid var(--stroke);
+        background: #0d1526;
         color: var(--text);
-        padding: 12px 12px 12px 12px;
-        border-radius: 14px;
-        font-size: 16px;
+        padding: 12px 12px;
+        border-radius: 12px;
+        font-size: 16px; /* important for iOS zoom prevention */
         outline: none;
-        transition: border-color .18s ease, box-shadow .18s ease, transform .06s ease;
+        transition: border-color .18s ease, box-shadow .18s ease;
       }
 
-      input::placeholder{ color: rgba(185,198,255,.55); }
+      input::placeholder{ color: rgba(169,183,214,.55); }
 
       input:focus{
         border-color: rgba(124,92,255,.9);
@@ -138,9 +107,9 @@
       }
 
       .actions{
-        margin-top: 18px;
+        margin-top: 16px;
         display:flex;
-        gap: 12px;
+        gap: 10px;
         flex-wrap: wrap;
         align-items:center;
       }
@@ -149,78 +118,73 @@
         border: 0;
         cursor: pointer;
         padding: 12px 14px;
-        border-radius: 14px;
+        border-radius: 12px;
         font-weight: 700;
         font-size: 15px;
         letter-spacing: .2px;
         transition: transform .06s ease, filter .16s ease, box-shadow .16s ease;
         user-select:none;
+        -webkit-tap-highlight-color: transparent;
       }
 
       .btn:active{ transform: translateY(1px); }
 
       .btn-primary{
         color: #07102a;
-        background: linear-gradient(135deg, var(--accent), var(--accent2));
-        box-shadow: 0 12px 26px rgba(124,92,255,.18), 0 10px 22px rgba(53,211,255,.12);
+        background: linear-gradient(135deg, var(--accent1), var(--accent2));
+        box-shadow: 0 10px 22px rgba(124,92,255,.16), 0 8px 18px rgba(53,211,255,.10);
       }
 
       .btn-secondary{
         color: var(--text);
-        background: rgba(7,12,28,.55);
-        border: 1px solid rgba(42,58,112,.75);
+        background: #0d1526;
+        border: 1px solid var(--stroke);
       }
 
       .btn:hover{ filter: brightness(1.04); }
 
       .hint{
         margin-left:auto;
-        color: rgba(185,198,255,.75);
+        color: rgba(169,183,214,.85);
         font-size: 13px;
       }
 
-      .error{
-        margin-top: 14px;
+      .msg{
+        margin-top: 12px;
         padding: 12px 12px;
-        border-radius: 14px;
-        border: 1px solid rgba(255,77,109,.6);
-        background: rgba(255,77,109,.09);
-        color: #ffd3db;
-        display:none;
-      }
-
-      .preview{
-        margin-top: 14px;
-        padding: 12px 12px;
-        border-radius: 14px;
-        border: 1px solid rgba(53,211,255,.5);
-        background: rgba(53,211,255,.08);
+        border-radius: 12px;
+        border: 1px solid var(--stroke);
+        background: #0d1526;
         color: var(--muted);
-        word-break: break-all;
         display:none;
       }
 
-      .preview a{
-        color: #cfe9ff;
-        text-decoration: none;
-        border-bottom: 1px dashed rgba(207,233,255,.5);
+      .msg.error{
+        border-color: rgba(255,77,109,.6);
+        background: rgba(255,77,109,.10);
+        color: #ffd3db;
       }
-      .preview a:hover{
-        border-bottom-style: solid;
+
+      .msg.info{
+        border-color: rgba(53,211,255,.5);
+        background: rgba(53,211,255,.08);
       }
 
       footer{
-        padding: 14px 26px 18px;
-        border-top: 1px solid rgba(42,58,112,.5);
-        color: rgba(185,198,255,.7);
+        padding: 12px 20px 16px;
+        border-top: 1px solid var(--stroke);
+        color: rgba(169,183,214,.75);
         font-size: 12px;
         line-height: 1.4;
-        background: rgba(10,16,36,.35);
+        background: #0d1526;
       }
 
+      /* Mobile optimization */
       @media (max-width: 720px){
         .grid{ grid-template-columns: 1fr; }
         .hint{ width:100%; margin-left:0; }
+        .actions{ flex-direction: column; align-items: stretch; }
+        .btn{ width: 100%; }
       }
     </style>
   </head>
@@ -229,54 +193,53 @@
     <div class="wrap">
       <div class="card">
         <header>
-          <h1>Open Uber with Coordinates</h1>
+          <h1>Uber Deep Link Redirect</h1>
           <div class="sub">
-            Enter pickup and dropoff coordinates. We’ll generate the Uber deep link using required address fields too.
-          </div>
-          <div class="pill-row">
-            <div class="pill">Pickup: <b>Puppy</b> + <b>Cheesecake</b></div>
-            <div class="pill">Dropoff: <b>Milkshake</b> + <b>Sinigang</b></div>
+            Enter pickup and dropoff coordinates, then we’ll redirect you to the Uber web deep link.
           </div>
         </header>
 
         <form id="uberForm" novalidate>
           <div class="section-title">Pickup</div>
           <div class="grid">
-            <div class="field">
+            <div>
               <label for="pickupLat">Pickup latitude</label>
-              <input id="pickupLat" type="number" step="any" inputmode="decimal" placeholder="e.g. 37.77581" />
+              <input id="pickupLat" type="number" step="any" inputmode="decimal" autocomplete="off"
+                     placeholder="e.g. 37.77581" />
             </div>
-            <div class="field">
+            <div>
               <label for="pickupLng">Pickup longitude</label>
-              <input id="pickupLng" type="number" step="any" inputmode="decimal" placeholder="e.g. -122.418028" />
+              <input id="pickupLng" type="number" step="any" inputmode="decimal" autocomplete="off"
+                     placeholder="e.g. -122.418028" />
             </div>
           </div>
 
           <div class="section-title">Dropoff</div>
           <div class="grid">
-            <div class="field">
+            <div>
               <label for="dropLat">Dropoff latitude</label>
-              <input id="dropLat" type="number" step="any" inputmode="decimal" placeholder="e.g. 37.802374" />
+              <input id="dropLat" type="number" step="any" inputmode="decimal" autocomplete="off"
+                     placeholder="e.g. 37.802374" />
             </div>
-            <div class="field">
+            <div>
               <label for="dropLng">Dropoff longitude</label>
-              <input id="dropLng" type="number" step="any" inputmode="decimal" placeholder="e.g. -122.405818" />
+              <input id="dropLng" type="number" step="any" inputmode="decimal" autocomplete="off"
+                     placeholder="e.g. -122.405818" />
             </div>
           </div>
 
           <div class="actions">
             <button class="btn btn-primary" type="submit">Open in Uber</button>
             <button class="btn btn-secondary" type="button" id="fillSample">Fill sample coords</button>
-            <div class="hint">Tip: lat ∈ [-90, 90], lng ∈ [-180, 180]</div>
+            <div class="hint">lat ∈ [-90, 90], lng ∈ [-180, 180]</div>
           </div>
 
-          <div id="error" class="error" role="alert" aria-live="polite"></div>
-          <div id="preview" class="preview"></div>
+          <div id="msg" class="msg" role="status" aria-live="polite"></div>
         </form>
 
         <footer>
-          This page only builds a redirect URL. It does not request rides. If Uber blocks deep links in some browsers,
-          try opening in a mobile browser or ensure the Uber app is installed.
+          This page only builds a redirect URL. It does not request rides. If deep links are blocked in your browser,
+          try opening on mobile or ensure the Uber app is installed.
         </footer>
       </div>
     </div>
@@ -293,32 +256,23 @@
         return n >= min && n <= max;
       }
 
-      function showError(msg) {
-        const el = document.getElementById("error");
-        el.textContent = msg;
+      function showMsg(text, type) {
+        const el = document.getElementById("msg");
+        el.textContent = text;
+        el.classList.remove("error", "info");
+        el.classList.add(type === "error" ? "error" : "info");
         el.style.display = "block";
       }
 
-      function clearError() {
-        const el = document.getElementById("error");
+      function hideMsg() {
+        const el = document.getElementById("msg");
         el.textContent = "";
         el.style.display = "none";
-      }
-
-      function showPreview(url) {
-        const el = document.getElementById("preview");
-        el.innerHTML = `Redirecting to: <a href="${url}">${url}</a>`;
-        el.style.display = "block";
-      }
-
-      function clearPreview() {
-        const el = document.getElementById("preview");
-        el.innerHTML = "";
-        el.style.display = "none";
+        el.classList.remove("error", "info");
       }
 
       function buildUberLink(pickLat, pickLng, dropLat, dropLng) {
-        // Location object (per docs): latitude, longitude, addressLine1, addressLine2
+        // Location object per docs: latitude, longitude, addressLine1, addressLine2
         const pickupObj = {
           latitude: pickLat,
           longitude: pickLng,
@@ -336,14 +290,13 @@
         const pickupEncoded = encodeURIComponent(JSON.stringify(pickupObj));
         const drop0Encoded = encodeURIComponent(JSON.stringify(dropObj));
 
-        // Keep brackets in parameter name: drop[0]
+        // Keep brackets in parameter name exactly: drop[0]
         return `https://m.uber.com/looking?pickup=${pickupEncoded}&drop[0]=${drop0Encoded}`;
       }
 
       document.getElementById("uberForm").addEventListener("submit", (e) => {
         e.preventDefault();
-        clearError();
-        clearPreview();
+        hideMsg();
 
         const pickupLat = parseNumber("pickupLat");
         const pickupLng = parseNumber("pickupLng");
@@ -351,35 +304,36 @@
         const dropLng = parseNumber("dropLng");
 
         if ([pickupLat, pickupLng, dropLat, dropLng].some((v) => v === null)) {
-          showError("Please enter valid numbers for all four fields.");
+          showMsg("Please enter valid numbers for all four fields.", "error");
           return;
         }
 
         if (!inRange(pickupLat, -90, 90) || !inRange(dropLat, -90, 90)) {
-          showError("Latitude must be between -90 and 90.");
+          showMsg("Latitude must be between -90 and 90.", "error");
           return;
         }
         if (!inRange(pickupLng, -180, 180) || !inRange(dropLng, -180, 180)) {
-          showError("Longitude must be between -180 and 180.");
+          showMsg("Longitude must be between -180 and 180.", "error");
           return;
         }
 
         const url = buildUberLink(pickupLat, pickupLng, dropLat, dropLng);
 
-        // Show the final URL briefly (useful if you want to copy it)
-        showPreview(url);
+        // Show a simple status (no URL)
+        showMsg("Redirecting…", "info");
 
-        window.location.assign(url);
+        // Small delay so the message paints before navigation on mobile browsers
+        setTimeout(() => {
+          window.location.assign(url);
+        }, 80);
       });
 
       document.getElementById("fillSample").addEventListener("click", () => {
-        // Sample coords (SF): Uber HQ -> Coit Tower
         document.getElementById("pickupLat").value = "37.77581";
         document.getElementById("pickupLng").value = "-122.418028";
         document.getElementById("dropLat").value = "37.802374";
         document.getElementById("dropLng").value = "-122.405818";
-        clearError();
-        clearPreview();
+        hideMsg();
       });
     </script>
   </body>

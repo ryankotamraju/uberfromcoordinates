@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Uber Deep Link Redirect</title>
+    <title>Open Uber with Coordinates</title>
 
     <style>
       :root{
@@ -248,8 +248,7 @@
         </form>
 
         <footer>
-          This page will not order a ride. It only opens Uber with your pickup and dropoff filled in so you can review
-          options and confirm in the app/site.
+          This page will not order a ride. It only opens Uber with your pickup and dropoff filled in so you can review options.
         </footer>
       </div>
     </div>
@@ -282,7 +281,6 @@
       }
 
       function buildUberLink(pickLat, pickLng, dropLat, dropLng) {
-        // Location object per docs: latitude, longitude, addressLine1, addressLine2
         const pickupObj = {
           latitude: pickLat,
           longitude: pickLng,
@@ -300,7 +298,6 @@
         const pickupEncoded = encodeURIComponent(JSON.stringify(pickupObj));
         const drop0Encoded = encodeURIComponent(JSON.stringify(dropObj));
 
-        // Keep brackets in parameter name exactly: drop[0]
         return `https://m.uber.com/looking?pickup=${pickupEncoded}&drop[0]=${drop0Encoded}`;
       }
 
@@ -329,12 +326,16 @@
 
         const url = buildUberLink(pickupLat, pickupLng, dropLat, dropLng);
 
-        showMsg("Redirecting…", "info");
+        showMsg("Opening Uber…", "info");
 
-        // Small delay so message paints before navigation on mobile
+        // Open in a new tab. Note: some mobile browsers may still open the same tab depending on settings.
         setTimeout(() => {
-          window.location.assign(url);
-        }, 80);
+          const newTab = window.open(url, "_blank", "noopener,noreferrer");
+          if (!newTab) {
+            // Popup blocked: provide a friendly message instead of failing silently
+            showMsg("Popup blocked. Please allow popups for this site and try again.", "error");
+          }
+        }, 50);
       });
 
       document.getElementById("fillSample").addEventListener("click", () => {

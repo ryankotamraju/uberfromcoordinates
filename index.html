@@ -94,6 +94,35 @@
         margin-bottom: 8px;
       }
 
+      /* Input + sign button group */
+      .input-group{
+        display:flex;
+        gap: 10px;
+        align-items: stretch;
+      }
+
+      .sign-btn{
+        width: 46px;
+        flex: 0 0 46px;
+        border-radius: 12px;
+        border: 1px solid var(--stroke);
+        background: #ffffff;
+        color: #2a0f18;
+        font-weight: 800;
+        font-size: 16px;
+        cursor: pointer;
+        transition: filter .16s ease, transform .06s ease, box-shadow .16s ease, border-color .18s ease;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .sign-btn:hover{ filter: brightness(0.99); }
+      .sign-btn:active{ transform: translateY(1px); }
+      .sign-btn:focus{
+        outline: none;
+        border-color: rgba(176, 24, 63, .55);
+        box-shadow: 0 0 0 4px var(--accentGlow);
+      }
+
       input{
         width:100%;
         appearance: none;
@@ -212,13 +241,20 @@
           <div class="grid">
             <div>
               <label for="pickupLat">Pickup latitude</label>
-              <input id="pickupLat" type="number" step="any" inputmode="decimal" autocomplete="off"
-                     placeholder="e.g. 37.77581" />
+              <div class="input-group">
+                <button class="sign-btn" type="button" data-target="pickupLat" aria-label="Toggle negative for pickup latitude">±</button>
+                <input id="pickupLat" type="text" inputmode="decimal" autocomplete="off"
+                       placeholder="e.g. 37.77581" />
+              </div>
             </div>
+
             <div>
               <label for="pickupLng">Pickup longitude</label>
-              <input id="pickupLng" type="number" step="any" inputmode="decimal" autocomplete="off"
-                     placeholder="e.g. -122.418028" />
+              <div class="input-group">
+                <button class="sign-btn" type="button" data-target="pickupLng" aria-label="Toggle negative for pickup longitude">±</button>
+                <input id="pickupLng" type="text" inputmode="decimal" autocomplete="off"
+                       placeholder="e.g. -122.418028" />
+              </div>
             </div>
           </div>
 
@@ -226,13 +262,20 @@
           <div class="grid">
             <div>
               <label for="dropLat">Dropoff latitude</label>
-              <input id="dropLat" type="number" step="any" inputmode="decimal" autocomplete="off"
-                     placeholder="e.g. 37.802374" />
+              <div class="input-group">
+                <button class="sign-btn" type="button" data-target="dropLat" aria-label="Toggle negative for dropoff latitude">±</button>
+                <input id="dropLat" type="text" inputmode="decimal" autocomplete="off"
+                       placeholder="e.g. 37.802374" />
+              </div>
             </div>
+
             <div>
               <label for="dropLng">Dropoff longitude</label>
-              <input id="dropLng" type="number" step="any" inputmode="decimal" autocomplete="off"
-                     placeholder="e.g. -122.405818" />
+              <div class="input-group">
+                <button class="sign-btn" type="button" data-target="dropLng" aria-label="Toggle negative for dropoff longitude">±</button>
+                <input id="dropLng" type="text" inputmode="decimal" autocomplete="off"
+                       placeholder="e.g. -122.405818" />
+              </div>
             </div>
           </div>
 
@@ -258,9 +301,16 @@
     <script>
       let msgTimer = null;
 
+      function sanitizeNumericString(s) {
+        // Allow digits, leading +/-, and one decimal separator (.,)
+        // Also convert commas to dots.
+        return s.trim().replace(/,/g, ".");
+      }
+
       function parseNumber(id) {
-        const v = document.getElementById(id).value.trim();
-        if (v === "") return null;
+        const raw = document.getElementById(id).value;
+        const v = sanitizeNumericString(raw);
+        if (v === "" || v === "-" || v === "+") return null;
         const n = Number(v);
         return Number.isFinite(n) ? n : null;
       }
@@ -291,6 +341,33 @@
         }
       }
 
+      function toggleNegative(inputId) {
+        const input = document.getElementById(inputId);
+        let v = input.value || "";
+
+        // Keep leading/trailing spaces out of the toggle behavior
+        const trimmed = v.trim();
+
+        if (trimmed.startsWith("-")) {
+          // Remove ONLY the first leading '-'
+          v = trimmed.slice(1);
+        } else if (trimmed.startsWith("+")) {
+          // Replace leading '+' with '-'
+          v = "-" + trimmed.slice(1);
+        } else {
+          v = "-" + trimmed;
+        }
+
+        input.value = v;
+
+        // Put cursor at end for quick typing on mobile
+        input.focus();
+        try {
+          const len = input.value.length;
+          input.setSelectionRange(len, len);
+        } catch {}
+      }
+
       function buildUberLink(pickLat, pickLng, dropLat, dropLng) {
         const pickupObj = {
           latitude: pickLat,
@@ -310,6 +387,15 @@
         const drop0Encoded = encodeURIComponent(JSON.stringify(dropObj));
         return `https://m.uber.com/looking?pickup=${pickupEncoded}&drop[0]=${drop0Encoded}`;
       }
+
+      // Wire up ± buttons
+      document.querySelectorAll(".sign-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const target = btn.getAttribute("data-target");
+          if (target) toggleNegative(target);
+          hideMsg();
+        });
+      });
 
       document.getElementById("uberForm").addEventListener("submit", (e) => {
         e.preventDefault();

@@ -239,6 +239,7 @@
           <div class="actions">
             <button class="btn btn-primary" type="submit">Open in Uber</button>
             <button class="btn btn-secondary" type="button" id="fillSample">Fill sample coords</button>
+            <button class="btn btn-secondary" type="button" id="clearCoords">Clear coordinates</button>
             <div class="hint">lat ∈ [-90, 90], lng ∈ [-180, 180]</div>
           </div>
 
@@ -336,7 +337,6 @@
         const url = buildUberLink(pickupLat, pickupLng, dropLat, dropLng);
         showMsg("Opening Uber…", "info");
 
-        // Open ONLY in a new tab via a user-gesture click
         const a = document.getElementById("uberOut");
         a.href = url;
         a.click();
@@ -347,6 +347,14 @@
         document.getElementById("pickupLng").value = "-122.418028";
         document.getElementById("dropLat").value = "37.802374";
         document.getElementById("dropLng").value = "-122.405818";
+        hideMsg();
+      });
+
+      document.getElementById("clearCoords").addEventListener("click", () => {
+        document.getElementById("pickupLat").value = "";
+        document.getElementById("pickupLng").value = "";
+        document.getElementById("dropLat").value = "";
+        document.getElementById("dropLng").value = "";
         hideMsg();
       });
     </script>

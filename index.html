@@ -254,6 +254,8 @@
     </div>
 
     <script>
+      let msgTimer = null;
+
       function parseNumber(id) {
         const v = document.getElementById(id).value.trim();
         if (v === "") return null;
@@ -271,6 +273,9 @@
         el.classList.remove("error", "info");
         el.classList.add(type === "error" ? "error" : "info");
         el.style.display = "block";
+
+        if (msgTimer) clearTimeout(msgTimer);
+        msgTimer = setTimeout(() => hideMsg(), 1000);
       }
 
       function hideMsg() {
@@ -278,6 +283,10 @@
         el.textContent = "";
         el.style.display = "none";
         el.classList.remove("error", "info");
+        if (msgTimer) {
+          clearTimeout(msgTimer);
+          msgTimer = null;
+        }
       }
 
       function buildUberLink(pickLat, pickLng, dropLat, dropLng) {
@@ -328,14 +337,9 @@
 
         showMsg("Opening Uber…", "info");
 
-        // Open in a new tab. Note: some mobile browsers may still open the same tab depending on settings.
-        setTimeout(() => {
-          const newTab = window.open(url, "_blank", "noopener,noreferrer");
-          if (!newTab) {
-            // Popup blocked: provide a friendly message instead of failing silently
-            showMsg("Popup blocked. Please allow popups for this site and try again.", "error");
-          }
-        }, 50);
+        // Open in a new tab (best effort). If blocked, fall back to same tab silently.
+        const newTab = window.open(url, "_blank", "noopener,noreferrer");
+        if (!newTab) window.location.assign(url);
       });
 
       document.getElementById("fillSample").addEventListener("click", () => {
